@@ -1,0 +1,180 @@
+<!--Created by Shelley Ophir
+Coding Dojo Sep. 22, 2020
+pacman code along with Michael Choi
+This is the code where JS overrides the HTML with code.-->
+
+<html>
+
+<head>
+    <title>PacMan Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="world"></div>
+
+    <div id="pacman"></div>
+    <!--display pacman-->
+
+    <!--scoreboard-->
+    <div id="scoreboard">Score:
+        <div id="score">100</div>
+    </div>
+
+    <!--lives-->
+    <div id="livesleft">Lives:
+        <div id="lives">3</div>
+    </div>
+
+    <!--info screen-->
+    <div id="info">
+        <h1>PacMan!</h1>
+        <img src="img/coin.gif">10 pts
+        <img src="img/cherry.png">50 pts
+    </div>
+
+    <div id="ghost"></div>
+
+
+
+</body>
+
+<script>
+    ////////////////////////////////////////////////////
+    //draw the world
+    var world = [
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+        [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2],
+        [2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2],
+        [2, 1, 1, 2, 2, 2, 1, 1, 1, 3, 1, 1, 2, 1, 1, 1, 2],
+        [2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2],
+        [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+    ];
+
+    //score counter
+    var score = 0;
+
+    function drawWorld() {
+        var output = [];
+
+        for (var i = 0; i < world.length; i++) {
+            output += "\n<div class='row'>";//add row opening tag
+
+            //loop to fill each row with it's proper block    
+            for (var j = 0; j < world[i].length; j++) {
+                if (world[i][j] == 0) {
+                    output += "<div class='blank'></div>";
+                }
+                else if (world[i][j] == 1) {
+                    output += "<div class='coin'></div>";
+                }
+                else if (world[i][j] == 2) {
+                    output += "<div class='brick'></div>";
+                }
+                else if (world[i][j] == 3) {
+                    output += "<div class='cherry'></div>";
+                }
+            }
+
+            output += "\n</div>";//add row closing tag
+
+            document.getElementById("world").innerHTML = output;//will add the above for loop code into the HTML body
+            document.getElementById("score").innerHTML = score;//updates the score
+        }
+    }
+
+    drawWorld();//call function 
+
+    ////////////////////////////////////////////////////////
+    //make pacman move
+
+    //create object to hold pacman's starting position
+    var pacman = {
+        x: 1,
+        y: 1
+    }
+
+    //create object to track pacman's direction
+    var direction = {
+        c: "right",//starting direction
+        l: "left",
+        r: "right",
+        u: "up",
+        d: "down"
+    }
+
+
+
+    //create function to track arrow keys
+    document.onkeydown = function (e) {
+        if (e.keyCode == 37 && world[pacman.y][pacman.x - 1] != 2)//left
+        {
+            pacman.x--;
+            direction.c = direction.l;
+
+        }
+        else if (e.keyCode == 39 && world[pacman.y][pacman.x + 1] != 2)//right
+        {
+            pacman.x++;
+            direction.c = direction.r;
+        }
+        else if (e.keyCode == 38 && world[pacman.y - 1][pacman.x] != 2)//up
+        {
+            pacman.y--;
+            direction.c = direction.u;
+        }
+        else if (e.keyCode == 40 && world[pacman.y + 1][pacman.x] != 2)//down
+        {
+            pacman.y++;
+            direction.c = direction.d;
+        }
+
+        updateLoc();//update location
+        updateDir();//update direction
+
+        //if eats a coin, update to clear it off
+        if (world[pacman.y][pacman.x] == 1) {
+            world[pacman.y][pacman.x] = 0;
+            score += 10;
+        }
+
+        //if eats a cherry, update to clear it off
+        if (world[pacman.y][pacman.x] == 3) {
+            world[pacman.y][pacman.x] = 0;
+            score += 50;
+        }
+
+
+        drawWorld();//redraw world to update cleared coin
+    }
+
+    //create function to update pacman's new location
+    function updateLoc() {
+        document.getElementById("pacman").style.left = pacman.x * 20 + "px";//the *20 is because each move is 20 px
+        document.getElementById("pacman").style.top = pacman.y * 20 + "px";
+    }
+
+    //create function to update pacman's direction
+    function updateDir() {
+        if (direction.c == "left") {
+            document.getElementById("pacman").style.transform = "rotate(180deg)";
+        }
+        else if (direction.c == "right") {
+            document.getElementById("pacman").style.transform = "rotate(0deg)";
+        }
+        else if (direction.c == "up") {
+            document.getElementById("pacman").style.transform = "rotate(270deg)";
+        }
+        else if (direction.c == "down") {
+            document.getElementById("pacman").style.transform = "rotate(90deg)";
+        }
+
+    }
+</script>
+
+</html>

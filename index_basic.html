@@ -1,0 +1,116 @@
+<!--Created by Shelley Ophir
+Coding Dojo Sep. 22, 2020
+pacman code along with Michael Choi
+This is the code before we have JS override the HTML with the automatic code.-->
+
+<html>
+    <head>
+        <title>PacMan Demo</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+        </div>
+        <div class="row">
+            <div class="brick"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="brick"></div>
+        </div>
+        <div class="row">
+            <div class="brick"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="pacman"></div>
+            <div class="blank"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="brick"></div>
+        </div>
+        <div class="row">
+            <div class="brick"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="coin"></div>
+            <div class="brick"></div>
+        </div>
+        <div class="row">
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+            <div class="brick"></div>
+        </div>
+
+
+    </body>
+
+    <script>
+        var world = [
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,1,1,1,1,1,1,1,1,2],
+            [2,1,1,1,1,1,1,1,1,2],
+            [2,1,1,1,1,1,1,1,1,2],
+            [2,2,2,2,2,2,2,2,2,2]
+        ];
+
+        function drawWorld(){
+            var output = [];
+
+            for (var i = 0; i < world.length; i++)
+            {
+                output += "\n<div class='row'>";//add row opening tag
+
+                //loop to fill each row with it's proper block    
+                for (var j = 0; j < world[i].length; j++)
+                {
+                    if (world[i][j] == 0)
+                    {
+                        output += "\n\t<div class='blank'></div>";
+                    }
+                    else if(world[i][j] == 1)
+                    {
+                        output += "\n\t<div class='coin'></div>";
+                    }
+                    else if (world[i][j] == 2)
+                    {
+                        output += "\n\t<div class='brick'></div>";
+                    }
+                }
+
+                output += "\n</div>";//add row closing tag
+
+                console.log(output);
+            }
+        }
+    </script>
+</html>
